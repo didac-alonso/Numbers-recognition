@@ -19,23 +19,24 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
 %         Aquí suposo que randsample fa servir per les permutacions. Però no sé
 %         si a cada iteració del while farà la mateixa. Espero que NO.
           
-          shuffle = randperm(p);
+          P = randperm(p);
  
-          XtrP = Xtr(:,shuffle); %Suposo que farà la mateixa per
-          ytrP = ytr(shuffle);
+          XtrP = Xtr(:,P);
+          ytrP = ytr(P);
           
-          % Tenim 2 opcions, sóc partidari de la segona, millora més cops
-          % normalment
-          %XtrP = Xtr(:,randperm(p));
-          %ytrP = ytr(:,randperm(p));
-          
-         % Xtr = Xtr(:,randperm(p));
-         % ytr = ytr(:,randperm(p));
+          % Tenim 2 opcions, sóc partidari de la segona, el profe de la primera
+
+          %Xtr = Xtr(:,P); %Suposo que farà la mateixa per
+          %ytr = ytr(P);
+
           for i = 0:top
-              %XtrS = XtrP(:, (i * m +1): min((i+1) * m, p));
-              %ytrS = ytrP((i * m +1): min((i+1) * m, p));
+
               XtrS = XtrP(:, (i*m+1): min((i+1)*m, p));
               ytrS = ytrP((i*m+1): min((i+1) * m, p));
+              
+              % Segona forma
+              %XtrS = Xtr(:, (i * m +1): min((i+1) * m, p));
+              %ytrS = ytr((i * m +1): min((i+1) * m, p));
               d = -gL(w, XtrS, ytrS);
               if k <= kSG
                   alpha_k = (1 - k/kSG) * alphaSG0 + k/kSG * alphaSG;

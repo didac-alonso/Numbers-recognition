@@ -1,5 +1,5 @@
 function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGmax, eSGbest, sg_seed)
-    xk = [x1];
+    %xk = [x1];
     w = x1;
     wo = x1;
     p = length(Xtr);
@@ -12,7 +12,6 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
     k = 0;
     kSG = floor(betaSG * KSGmax);
     alphaSG = alphaSG0 * 0.01;
-    dk = [];
     if ~isempty(sg_seed), rng(sg_seed); end 
     top = ceil(p/m-1);% Per a què no hagi de fer el ceiling a cada iteració
     while e <= eSGmax && s < eSGbest
@@ -32,18 +31,18 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
           for i = 0:top
 
               XtrS = XtrP(:, (i*m+1): min((i+1)*m, p));
-              ytrS = ytrP((i*m+1): min((i+1) * m, p));
+              ytrS = ytrP((i*m+1): min((i+1)*m, p));
               
               % Segona forma
               %XtrS = Xtr(:, (i * m +1): min((i+1) * m, p));
               %ytrS = ytr((i * m +1): min((i+1) * m, p));
               d = -gL(w, XtrS, ytrS);
               if k <= kSG
-                  alpha_k = (1 - k/kSG) * alphaSG0 + k/kSG * alphaSG;
+                  alpha_k = (1 - k/kSG)*alphaSG0 + k/kSG*alphaSG;
               else
                   alpha_k = alphaSG;
               end 
-              w = w + alpha_k * d;
+              w = w + alpha_k*d;
               %xk = [xk w];
               k = k + 1;
           end
@@ -57,7 +56,7 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
               s = s + 1;
           end   
     end
-    % Mirem quants cops ha millorat
+    k = k + 1;
 end
 
 

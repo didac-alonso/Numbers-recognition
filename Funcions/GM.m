@@ -28,7 +28,7 @@ function [xk, dk, ak, iWk, it] = GM(x, f, g, almax, c1, c2, epsG, itmax,ialmax, 
         x = x + a*d;
         dfx = g(x);
         d = - dfx;
-        if ialmax == 1 && it > 1
+        if ialmax == 1
             almax = a*(g(xk(:,end))'*dk(:,end))/(dfx'*d);
         elseif ialmax == 2
             almax = 2*(f(x)-f(xk(:,end)))/(dfx'*d);

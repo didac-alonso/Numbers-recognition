@@ -12,10 +12,11 @@ Output:
 function [xk, dk, ak, Hk, iWk, it] = BFGS(x, f, g, almax, c1, c2, epsG, kmax, ialmax, maxiter, epsal)
     I = eye(size(x,1));
     H = I;
-    Hk = [H]; it = 1; xk = [x]; dk = []; ak = []; iWk = [];
+    Hk = [H]; it = 1; xk = [x]; ak = []; iWk = [];
     dfx = g(x);
+    d = -H*dfx; dk = [d];
+
     while norm(dfx) > epsG & it <= kmax
-        d = -H*dfx;
         [a,iout] = uo_BLSNW32(f,g,x,d,almax,c1,c2,maxiter,epsal);
         x = x+a*d;
         
@@ -25,7 +26,8 @@ function [xk, dk, ak, Hk, iWk, it] = BFGS(x, f, g, almax, c1, c2, epsG, kmax, ia
         p = 1/(y'*s);
         H = (I-p*s*y')*H*(I-p*y*s')+p*(s*s');
 
-        if ialmax == 1 && it > 1
+        d = -H*dfx;
+        if ialmax == 1
             almax = a*(dfx1'*dk(:,end))/(dfx'*d);
         elseif ialmax == 2
             almax = 2*(f(x)-f(xk(:,end)))/(dfx'*d);

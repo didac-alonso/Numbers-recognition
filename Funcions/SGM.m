@@ -25,7 +25,7 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
           
           % Tenim 2 opcions, sóc partidari de la segona, el profe de la primera
 
-          %Xtr = Xtr(:,P); %Suposo que farà la mateixa per
+          %Xtr = Xtr(:,P);
           %ytr = ytr(P);
 
           for i = 0:top

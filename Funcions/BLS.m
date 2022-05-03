@@ -19,7 +19,7 @@ Output:
         - 7: S'ha usat ELS
 %}
 function [a, iWout] = BLS(x, f, df, d, amin, amax, p, c1, c2, iW, Q)
-    if iW == 0 % ELS: Exact-Line Search
+    if iW == 1 % ELS: Exact-Line Search
        a = -(df(x)'*d)/(d'*Q*d);
        iWout = 7;
     else

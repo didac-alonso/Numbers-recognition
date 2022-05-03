@@ -16,13 +16,11 @@ function [Xtr,ytr,wo,fo,tr_acc,Xte,yte,te_acc,niter,tex]=uo_nn_solve(num_target,
     if isd == 1
         gL = @(w) (2*sig(Xtr)*((y(Xtr,w)-ytr).*y(Xtr,w).*(1-y(Xtr,w)))')/size(ytr,2)+la*w;
         
-        [wk, dk, ak, iWk, niter] = GM(w1, L, gL, 1, c1, c2, epsG, kmax, ialmax,kmaxBLS,epsal);
-    elseif isd == 2
-        [wk, dk, alk, betak, iWk, niter] = CGM(w1, L, gL, sig, y, almin, almax, rho, c1, c2, iW, epsG, kmax, icg, irc, nu);
+        [wk, dk, ak, iWk, niter] = GM(w1, L, gL, 1, c1, c2, epsG, kmax, ialmax,kmaxBLS,epsal, ils, 0);
     elseif isd == 3
         gL = @(w) (2*sig(Xtr)*((y(Xtr,w)-ytr).*y(Xtr,w).*(1-y(Xtr,w)))')/size(ytr,2)+la*w;
         
-        [wk, dk, alk, Hk, iWk, niter] = BFGS(w1, L, gL, 1, c1, c2, epsG, kmax, ialmax, kmaxBLS, epsal);
+        [wk, dk, alk, Hk, iWk, niter] = BFGS(w1, L, gL, 1, c1, c2, epsG, kmax, ialmax, kmaxBLS, epsal, ils, 0);
     elseif isd == 7
         Lte = @(w) (norm(y(Xte,w)-yte)^2)/size(yte,2)+ (la*norm(w)^2)/2;
         gL = @(w, X, yt) (2*sig(X)*((y(X,w)-yt).*y(X,w).*(1-y(X,w)))')/size(yt,2)+la*w;

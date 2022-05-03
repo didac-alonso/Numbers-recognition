@@ -18,13 +18,17 @@ Output:
     - xk,dk,ak, iWk com sempre
     - it: nombre d'iteracions usades
 %}
-function [xk, dk, ak, iWk, it] = GM(x, f, g, almax, c1, c2, epsG, itmax,ialmax, maxiter,epsal)
+function [xk, dk, ak, iWk, it] = GM(x, f, g, almax, c1, c2, epsG, itmax,ialmax, maxiter,epsal, ils, Q)
     it = 1;
     xk = [x];
     dfx = g(x);
     dk = [-dfx]; d = -dfx; ak = []; iWk = [];
     while norm(dfx) > epsG && it <= itmax
-        [a,iout] = uo_BLSNW32(f,g,x,d,almax,c1,c2,maxiter,epsal);
+        if ils == 3
+            [a,iout] = uo_BLSNW32(f,g,x,d,almax,c1,c2,maxiter,epsal);            
+        elseif ils < 3
+            [a, iout] = BLS(x, f, df, d, amin, amax, p, c1, c2, iW, Q);
+        end
         x = x + a*d;
         dfx = g(x);
         d = - dfx;

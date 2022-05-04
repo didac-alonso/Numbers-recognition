@@ -14,7 +14,7 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
     alphaSG = alphaSG0 * 0.01;
     if ~isempty(sg_seed), rng(sg_seed); end 
     top = ceil(p/m-1);% Per a què no hagi de fer el ceiling a cada iteració
-    while e <= eSGmax && s < eSGbest
+    while e <= eSGmax && s < eSGbest && k < KSGmax
 %         Aquí suposo que randsample fa servir per les permutacions. Però no sé
 %         si a cada iteració del while farà la mateixa. Espero que NO.
           

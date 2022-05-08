@@ -1,4 +1,15 @@
-function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGmax, eSGbest, sg_seed)
+%{
+Input:
+    x1: punt inicial
+    Xtr, ytr: set de training
+    gL: Derivada de L
+    Lte: L avaluada en el set de test
+    sg_seed: Seed per les permutacions
+Output:
+    wo: òptim, millor punt trobat
+    k: nombre d'iteracions
+%}
+function [wo, k] = SGM(x1, Xtr, ytr, gL,Lte, alphaSG0, betaSG, gammaSG, eSGmax, eSGbest, sg_seed)
     %xk = [x1];
     w = x1;
     wo = x1;
@@ -13,30 +24,17 @@ function [wo, k] = SGM(x1, Xtr, ytr, L, gL,Lte, alphaSG0, betaSG, gammaSG, eSGma
     kSG = floor(betaSG * KSGmax);
     alphaSG = alphaSG0 * 0.01;
     if ~isempty(sg_seed), rng(sg_seed); end 
-    top = ceil(p/m-1);% Per a què no hagi de fer el ceiling a cada iteració
+    top = ceil(p/m-1);
     while e <= eSGmax && s < eSGbest && k < KSGmax
-%         Aquí suposo que randsample fa servir per les permutacions. Però no sé
-%         si a cada iteració del while farà la mateixa. Espero que NO.
-          
           P = randperm(p);
- 
           XtrP = Xtr(:,P);
           ytrP = ytr(P);
-          
-          % Tenim 2 opcions, sóc partidari de la segona, el profe de la primera
-
-          %Xtr = Xtr(:,P);
-          %ytr = ytr(P);
-
           for i = 0:top
 
               XtrS = XtrP(:, (i*m+1): min((i+1)*m, p));
               ytrS = ytrP((i*m+1): min((i+1)*m, p));
-              
-              % Segona forma
-              %XtrS = Xtr(:, (i * m +1): min((i+1) * m, p));
-              %ytrS = ytr((i * m +1): min((i+1) * m, p));
               d = -gL(w, XtrS, ytrS);
+              
               if k <= kSG
                   alpha_k = (1 - k/kSG)*alphaSG0 + k/kSG*alphaSG;
               else

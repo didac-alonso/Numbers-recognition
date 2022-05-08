@@ -18,17 +18,17 @@ Output:
         - 3: SWC2
         - 7: S'ha usat ELS
 %}
-function [a, iWout] = BLS(x, f, df, d, amin, amax, p, c1, c2, iW, Q)
+function [a, iWout] = BLS(x, f, g, d, almin, almax, rho, c1, c2, iW, Q)
     if iW == 1 % ELS: Exact-Line Search
-       a = -(df(x)'*d)/(d'*Q*d);
+       a = -(g(x)'*d)/(d'*Q*d);
        iWout = 7;
     else
-        a = amax;
+        a = almax;
         iWout = 0;
-        [b, iWout] = WolfeC(x, a, f, df, d, c1, c2, iW);
-        while a >= amin & ~b
-            a = p*a;
-            [b, iWout] = WolfeC(x, a, f, df, d, c1, c2, iW);
+        [b, iWout] = WolfeC(x, a, f, g, d, c1, c2, iW);
+        while a >= almin & ~b
+            a = rho*a;
+            [b, iWout] = WolfeC(x, a, f, g, d, c1, c2, iW);
         end
         % Per veure si falla Wolfe es pot descomentar:
         %{
